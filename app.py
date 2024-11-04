@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from services import RecipeService
 
@@ -35,4 +36,4 @@ def get_recipe_by_name():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
