@@ -1,8 +1,10 @@
 import os
 from flask import Flask, jsonify, request
+from flask_cors import CORS # import CORS
 from services import RecipeService
 
 app = Flask(__name__)
+CORS(app) # enable CORS for all routes
 recipe_service = RecipeService()
 
 
@@ -37,3 +39,4 @@ def get_recipe_by_name():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+    # app.run(debug=1)
