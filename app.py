@@ -5,7 +5,7 @@ from services import RecipeService
 
 app = Flask(__name__)
 # frontend specific URL
-CORS(app, origins=['https://no-waste-api.onrender.com'])
+CORS(app, origins=['https://no-waste-frontend.onrender.com'])
 # Allow all origins in development
 # CORS(app, resources={r"/*": {"origins": "*"}})  
 recipe_service = RecipeService()
