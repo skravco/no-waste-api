@@ -4,7 +4,10 @@ from flask_cors import CORS # import CORS
 from services import RecipeService
 
 app = Flask(__name__)
-CORS(app) # enable CORS for all routes
+# frontend specific URL
+CORS(app, origins=['https://no-waste-api.onrender.com'])
+# Allow all origins in development
+# CORS(app, resources={r"/*": {"origins": "*"}})  
 recipe_service = RecipeService()
 
 
@@ -24,18 +27,17 @@ def get_recipes_by_ingredient():
 
 
 @app.route('/recipe', methods=['GET'])
-def get_recipe_by_name():
+def get_recipes_by_name():
     name = request.args.get('name')
-    if name:
-        recipe = recipe_service.get_recipe_by_name(name)
-        if recipe:
-            return jsonify(
-                {'name': recipe.name,
-                 'ingredients': recipe.ingredients}
-                ), 200
-        return jsonify({'error': 'recipe not founc!'}), 404
-    return jsonify({'error': '"name" parameter is required!'}), 400
+    if not name:
+        return jsonify({'error': 'name parameter is required!'}), 400
 
+    recipes = recipe_service.find_recipes_by_partial_name(name)
+    if recipes:
+        recipes_list = [recipe.to_dict() for recipe in recipes]  # Ensure we serialize each recipe
+        return jsonify(recipes_list), 200
+    else:
+        return jsonify({'error': 'No recipes found!'}), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))

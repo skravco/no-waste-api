@@ -13,10 +13,21 @@ class RecipeService:
         for recipe in self.recipes:
             if recipe.contains_ingredient(ingredient_name):
                 matching_recipes.append(recipe)
+
         return matching_recipes
 
     def get_recipe_by_name(self, name):
         for recipe in self.recipes:
             if recipe.name.lower() == name.lower():
                 return recipe
+
         return None
+
+    def find_recipes_by_partial_name(self, name):
+        name = name.lower()
+        matching_recipes = []
+        for recipe in self.recipes:
+            if name in recipe.name.lower():
+                matching_recipes.append(recipe)
+
+        return matching_recipes
